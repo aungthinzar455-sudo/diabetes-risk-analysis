@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, jsonify
 import numpy as np
 import pickle
 import csv
+import os
+import pandas as pd
 from datetime import datetime
-
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ model = pickle.load(open("model.pkl", "rb"))
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -46,9 +48,19 @@ def predict():
             color = "#ef4444"
             suggestion = "High probability detected. Please consult a healthcare professional immediately."
 
-        # ✅ Save prediction to CSV (FIXED INDENTATION)
+        # ✅ Create CSV if not exists with header
+        file_exists = os.path.isfile("prediction_history.csv")
+
         with open("prediction_history.csv", mode="a", newline="") as file:
             writer = csv.writer(file)
+
+            if not file_exists:
+                writer.writerow([
+                    "timestamp", "pregnancies", "glucose", "bloodpressure",
+                    "skinthickness", "insulin", "bmi", "dpf", "age",
+                    "probability", "risk_level"
+                ])
+
             writer.writerow([
                 datetime.now(),
                 data["pregnancies"],
@@ -73,12 +85,25 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)})
 
-import pandas as pd
 
 @app.route("/dashboard")
 def dashboard():
     try:
+        if not os.path.isfile("prediction_history.csv"):
+            return render_template("dashboard.html",
+                                   total=0,
+                                   avg=0,
+                                   high=0,
+                                   records=[])
+
         df = pd.read_csv("prediction_history.csv")
+
+        if df.empty:
+            return render_template("dashboard.html",
+                                   total=0,
+                                   avg=0,
+                                   high=0,
+                                   records=[])
 
         total_predictions = len(df)
         average_risk = round(df["probability"].mean(), 2)
@@ -92,13 +117,10 @@ def dashboard():
                                high=high_risk_count,
                                records=records)
 
-    except:
-        return "No data available yet."
+    except Exception as e:
+        return str(e)
 
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
+# ✅ Correct run block for deployment
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
