@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diabetes Risk Analysis</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: #334155;
+            color: white;
+        }
+
+        button {
+            grid-column: span 2;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #3b82f6;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .result-card {
+            margin-top: 30px;
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 10px;
+        }
+
+        .risk-status {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #22c55e, #ef4444);
+            transition: width 1s ease;
+        }
+
+        .insight {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Diabetes Risk Analysis</h1>
+
+    <form id="riskForm">
+        <input name="pregnancies" placeholder="Pregnancies" required>
+        <input name="glucose" placeholder="Glucose Level" required>
+        <input name="bloodpressure" placeholder="Blood Pressure" required>
+        <input name="skinthickness" placeholder="Skin Thickness" required>
+        <input name="insulin" placeholder="Insulin Level" required>
+        <input name="bmi" placeholder="BMI" required>
+        <input name="dpf" placeholder="Diabetes Pedigree Function" required>
+        <input name="age" placeholder="Age" required>
+
+        <button type="submit">Analyze Risk</button>
+    </form>
+
+    <div class="result-card">
+        <div class="risk-status">No assessment performed yet.</div>
+
+        <div class="progress-bar">
+            <div class="progress" id="riskBar"></div>
+        </div>
+
+        <div>
+            Risk Probability: <strong class="probability-value">0%</strong>
+        </div>
+
+        <div class="insight">
+            Awaiting analysis...
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById("riskForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = {
+        pregnancies: document.querySelector("input[placeholder='Pregnancies']").value,
+        glucose: document.querySelector("input[placeholder='Glucose Level']").value,
+        bloodpressure: document.querySelector("input[placeholder='Blood Pressure']").value,
+        skinthickness: document.querySelector("input[placeholder='Skin Thickness']").value,
+        insulin: document.querySelector("input[placeholder='Insulin Level']").value,
+        bmi: document.querySelector("input[placeholder='BMI']").value,
+        dpf: document.querySelector("input[placeholder='Diabetes Pedigree Function']").value,
+        age: document.querySelector("input[placeholder='Age']").value
+    };
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())   // 🔥 VERY IMPORTANT FIX
+    .then(result => {
+
+        if (result.error) {
+            alert("Server Error: " + result.error);
+            return;
+        }
+
+        document.querySelector(".risk-status").innerText = result.result;
+        document.querySelector(".probability-value").innerText = result.probability + "%";
+        document.getElementById("riskBar").style.width = result.probability + "%";
+        document.getElementById("riskBar").style.background = result.color;
+        document.querySelector(".insight").innerText = result.suggestion;
+    })
+    .catch(error => console.error("Error:", error));
+});
+</script>
+
+
+</body>
+</html>
