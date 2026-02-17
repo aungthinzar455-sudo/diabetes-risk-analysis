@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial; background:#0f172a; color:white; padding:40px; }
+        .card { background:#1e293b; padding:20px; margin:10px; border-radius:10px; display:inline-block; }
+        table { width:100%; margin-top:30px; border-collapse: collapse; }
+        th, td { padding:10px; border:1px solid #334155; text-align:center; }
+        th { background:#1e293b; }
+    </style>
+</head>
+<body>
+
+<h1>Diabetes Prediction Dashboard</h1>
+
+<div class="card">Total Predictions: {{ total }}</div>
+<div class="card">Average Risk: {{ avg }}%</div>
+<div class="card">High Risk Cases: {{ high }}</div>
+
+<table>
+    <tr>
+        <th>Timestamp</th>
+        <th>Glucose</th>
+        <th>BMI</th>
+        <th>Age</th>
+        <th>Probability</th>
+        <th>Risk Level</th>
+    </tr>
+
+    {% for r in records %}
+    <tr>
+        <td>{{ r.timestamp }}</td>
+        <td>{{ r.glucose }}</td>
+        <td>{{ r.bmi }}</td>
+        <td>{{ r.age }}</td>
+        <td>{{ r.probability }}%</td>
+        <td>{{ r.risk_level }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
 
