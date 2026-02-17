@@ -18,6 +18,10 @@
 <div class="card">Average Risk: {{ avg }}%</div>
 <div class="card">High Risk Cases: {{ high }}</div>
 
+<h2>Risk Distribution</h2>
+<canvas id="riskChart" width="400" height="200"></canvas>
+
+
 <table>
     <tr>
         <th>Timestamp</th>
@@ -40,6 +44,26 @@
     {% endfor %}
 </table>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('riskChart').getContext('2d');
+
+const riskChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Low Risk', 'Moderate Risk', 'High Risk'],
+        datasets: [{
+            label: 'Risk Distribution',
+            data: [
+                {{ records|selectattr("risk_level", "equalto", "Low Risk")|list|length }},
+                {{ records|selectattr("risk_level", "equalto", "Moderate Risk")|list|length }},
+                {{ records|selectattr("risk_level", "equalto", "High Risk")|list|length }}
+            ]
+        }]
+    }
+});
+</script>
+
 </body>
 </html>
-
