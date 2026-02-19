@@ -89,12 +89,15 @@ def predict():
 @app.route("/dashboard")
 def dashboard():
     try:
-        if not os.path.isfile("prediction_history.csv"):
-            return render_template("dashboard.html",
-                                   total=0,
-                                   avg=0,
-                                   high=0,
-                                   records=[])
+        # Create file if missing
+        if not os.path.exists("prediction_history.csv"):
+            with open("prediction_history.csv", "w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow([
+                    "timestamp", "pregnancies", "glucose", "bloodpressure",
+                    "skinthickness", "insulin", "bmi", "dpf", "age",
+                    "probability", "risk_level"
+                ])
 
         df = pd.read_csv("prediction_history.csv")
 
@@ -121,6 +124,11 @@ def dashboard():
         return str(e)
 
 
+    except Exception as e:
+        return str(e)
+
+
 # ✅ Correct run block for deployment
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
