@@ -1,69 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+    <title>Diabetes Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: Arial; background:#0f172a; color:white; padding:40px; }
         .card { background:#1e293b; padding:20px; margin:10px; border-radius:10px; display:inline-block; }
         table { width:100%; margin-top:30px; border-collapse: collapse; }
         th, td { padding:10px; border:1px solid #334155; text-align:center; }
         th { background:#1e293b; }
+        .chart-box { width:600px; margin-top:30px; }
     </style>
 </head>
 <body>
 
-<h1>Diabetes Prediction Dashboard</h1>
+<h1>📊 Diabetes Risk Analytics</h1>
 
 <div class="card">Total Predictions: {{ total }}</div>
 <div class="card">Average Risk: {{ avg }}%</div>
 <div class="card">High Risk Cases: {{ high }}</div>
 
-<h2>Risk Distribution</h2>
-<canvas id="riskChart" width="400" height="200"></canvas>
-
+<div class="chart-box">
+    <canvas id="riskChart" height="120"></canvas>
+</div>
 
 <table>
-    <tr>
-        <th>Timestamp</th>
-        <th>Glucose</th>
-        <th>BMI</th>
-        <th>Age</th>
-        <th>Probability</th>
-        <th>Risk Level</th>
-    </tr>
+<tr>
+    <pip install reportlabth>View</th>
+<th>Timestamp</th>
+<th>Name</th>
+<th>Patient ID</th>
+<th>Glucose</th>
+<th>BMI</th>
+<th>Age</th>
+<th>Probability</th>
+<th>Risk Level</th>
+</tr>
 
-    {% for r in records %}
-    <tr>
-        <td>{{ r.timestamp }}</td>
-        <td>{{ r.glucose }}</td>
-        <td>{{ r.bmi }}</td>
-        <td>{{ r.age }}</td>
-        <td>{{ r.probability }}%</td>
-        <td>{{ r.risk_level }}</td>
-    </tr>
-    {% endfor %}
+{% for r in records %}
+<tr>
+    <td>{{ loop.index0 }}</td>
+    <td>{{ r.timestamp }}</td>
+    <td>{{ r.glucose }}</td>
+    <td>{{ r.bmi }}</td>
+    <td>{{ r.age }}</td>
+    <td>{{ r.probability }}%</td>
+    <td>{{ r.risk_level }}</td>
+    <td><a href="/profile/{{ loop.index0 }}" style="color:#38bdf8;">View</a></td>
+</tr>
+{% endfor %}
 </table>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+const lowRisk = {{ records | selectattr('risk_level', 'equalto', 'Low Risk') | list | length }};
+const moderateRisk = {{ records | selectattr('risk_level', 'equalto', 'Moderate Risk') | list | length }};
+const highRisk = {{ records | selectattr('risk_level', 'equalto', 'High Risk') | list | length }};
+
 const ctx = document.getElementById('riskChart').getContext('2d');
 
-const riskChart = new Chart(ctx, {
-    type: 'bar',
+new Chart(ctx, {
+    type: 'doughnut',
     data: {
         labels: ['Low Risk', 'Moderate Risk', 'High Risk'],
         datasets: [{
-            label: 'Risk Distribution',
-            data: [
-                {{ records|selectattr("risk_level", "equalto", "Low Risk")|list|length }},
-                {{ records|selectattr("risk_level", "equalto", "Moderate Risk")|list|length }},
-                {{ records|selectattr("risk_level", "equalto", "High Risk")|list|length }}
-            ]
+            data: [lowRisk, moderateRisk, highRisk],
+            backgroundColor: ['#22c55e', '#facc15', '#ef4444']
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: "white"
+                }
+            }
+        }
     }
 });
 </script>
+
 
 </body>
 </html>
