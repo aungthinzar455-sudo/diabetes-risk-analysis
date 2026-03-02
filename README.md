@@ -49,20 +49,19 @@ This system allows secure login, real-time patient risk prediction, analytics da
 ## 📷 Application Screenshots
 
 ### 🔐 Login Page
-![Login](login.png)
+![Login](screenshots/login.png)
 
 ### 📊 Analytics Dashboard
-![Dashboard](dashboard.png)
+![Dashboard](screenshots/dashboard.png)
 
 ### 🧠 Risk Prediction
-![Prediction](prediction.png)
+![Prediction](screenshots/prediction.png)
 
 ### 👤 Patient Profile
-![Profile](patient%20profile.png)
+![Profile](screenshots/patient%20profile.png)
 
 ### 📄 Generated PDF Report
-![PDF](record.png)
----
+![PDF](screenshots/record.png)
 
 ## 📊 Risk Classification Logic
 
