@@ -58,11 +58,10 @@ This system allows secure login, real-time patient risk prediction, analytics da
 ![Prediction](prediction.png)
 
 ### 👤 Patient Profile
-![Profile](patient profile.png)
+![Profile](patient%20profile.png)
 
 ### 📄 Generated PDF Report
 ![PDF](record.png)
-
 ---
 
 ## 📊 Risk Classification Logic
