@@ -57,11 +57,6 @@ Below are real screenshots from the working Diabetes Risk Analysis system.
 
 ---
 
-### 📊 Analytics Dashboard
-![Analytics Dashboard](screenshots/dashboard.png)
-
----
-
 ### 📝 Before Prediction (Input Form)
 ![Before Prediction](screenshots/before%20prediction.png)
 
@@ -72,8 +67,8 @@ Below are real screenshots from the working Diabetes Risk Analysis system.
 
 ---
 
-### 👤 Patient Profile
-![Patient Profile](screenshots/patient%20profile.png)
+### 📊 Analytics Dashboard
+![Analytics Dashboard](screenshots/dashboard.png)
 
 ---
 
@@ -81,6 +76,12 @@ Below are real screenshots from the working Diabetes Risk Analysis system.
 ![Report Preview](screenshots/report_preview.png)
 
 ---
+
+### 👤 Patient Profile
+![Patient Profile](screenshots/patient%20profile.png)
+
+---
+
 ## 📊 Risk Classification Logic
 
 - Low Risk → Probability < 30%
