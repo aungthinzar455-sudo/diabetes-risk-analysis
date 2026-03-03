@@ -48,21 +48,39 @@ This system allows secure login, real-time patient risk prediction, analytics da
 
 ## 📷 Application Screenshots
 
+Below are real screenshots from the working Diabetes Risk Analysis system.
+
+---
+
 ### 🔐 Login Page
-![Login](screenshots/login.png)
+![Login Page](screenshots/login.png)
+
+---
 
 ### 📊 Analytics Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Analytics Dashboard](screenshots/dashboard.png)
 
-### 🧠 Risk Prediction
-![Prediction](screenshots/prediction.png)
+---
+
+### 📝 Before Prediction (Input Form)
+![Before Prediction](screenshots/before%20prediction.png)
+
+---
+
+### 🧠 Risk Prediction Result
+![Prediction Result](screenshots/prediction.png)
+
+---
 
 ### 👤 Patient Profile
-![Profile](screenshots/patient%20profile.png)
+![Patient Profile](screenshots/patient%20profile.png)
 
-### 📄 Generated PDF Report
-![Dashboard](screenshots/report_preview.png)
+---
 
+### 📄 Generated Report Preview
+![Report Preview](screenshots/report_preview.png)
+
+---
 ## 📊 Risk Classification Logic
 
 - Low Risk → Probability < 30%
